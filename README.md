@@ -1,57 +1,60 @@
-# Project Name
 
-(short, 1-3 sentenced, description of the project)
+# CosmosDB Apache Camel example
+ 
+This example demonstrates how you can integrate CosmosDB into your Apache Camel
+application.
 
-## Features
+## Provisioning CosmosDB 
 
-This project framework provides the following features:
+As this example requires CosmosDB you will need to provision it. Run the
+following commands below to provision it.
 
-* Feature 1
-* Feature 2
-* ...
+```
+  az login
+  az account set --subscription "<your-azure-subscription>"
+  provision_cosmos_db.sh
+```
 
-## Getting Started
+NOTE: You can use either a subscription name or id when specifying which 
+subscription to use; to obtain a list of your subscriptions, type ```az account list```. 
 
-### Prerequisites
+## Deploying the web application
 
-(ideally very short, if any)
+To deploy the web application successfully you will need to set the following 
+environment variables:
 
-- OS
-- Library version
-- ...
+```
+COSMOSDB_URI           -> to the URI of the CosmosDB location.
+COSMOSDB_PRIMARY_KEY   -> to the PrimaryKey to be used.
+COSMOSDB_DATABASE_NAME -> to the Database Name to be used.
+```
 
-### Installation
+And then you can start the example using Jetty by using Maven
 
-(ideally very short)
+```
+mvn jetty:run
+```
 
-- npm install [package name]
-- mvn install
-- ...
+Then the example will be running on http://localhost:8080/cosmosdb-camel/
 
-### Quickstart
-(Add steps to get up and running quickly)
+## Getting a value from the key value store
 
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
+To get a value from the key value store you can use:
 
+```
+  http://localhost:8080/cosmosdb-camel/get?name=myname
+```
 
-## Demo
+You can replace myname with the name of a key of your choice.
 
-A demo app is included to show how to use the project.
+## Setting a key in the key value store
 
-To run the demo, follow these steps:
+To set a key in the key value store you can use:
 
-(Add steps to start up the demo)
+```
+  http://localhost:8080/cosmosdb-camel/set?name=myname&value=myvalue.
+```
 
-1.
-2.
-3.
+You can replace myname with the name of a key of your choice.
 
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+You can replace myvalue with the value of your choice.
