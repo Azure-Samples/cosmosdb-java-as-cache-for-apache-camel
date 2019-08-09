@@ -29,7 +29,19 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <!-- allows running this example with mvn jetty:run -->
+            <!-- allows running this example with Tomcat using mvn cargo:run -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.7.6</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat9x</containerId>
+                        <type>embedded</type>
+                    </container>
+                </configuration>
+            </plugin>
+            <!-- allows running this example with Jetty using mvn jetty:run -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

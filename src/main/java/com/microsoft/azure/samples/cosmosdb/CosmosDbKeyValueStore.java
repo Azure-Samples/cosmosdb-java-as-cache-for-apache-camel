@@ -2,8 +2,12 @@ package com.microsoft.azure.samples.cosmosdb;
 
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.ExcludedPath;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.IncludedPath;
+import com.azure.data.cosmos.IndexingMode;
+import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.AsyncDocumentClient;
@@ -71,6 +75,17 @@ public class CosmosDbKeyValueStore {
             paths.add("/id");
             partitionKey.paths(paths);
             collectionInfo.id("kvs");
+            collectionInfo.setDefaultTimeToLive(86200);
+            IndexingPolicy indexingPolicy = new IndexingPolicy();
+            indexingPolicy.indexingMode(IndexingMode.CONSISTENT);
+            indexingPolicy.automatic(true);
+            IncludedPath includedPath = new IncludedPath();
+            includedPath.path("/*");
+            indexingPolicy.includedPaths().add(includedPath);
+            ExcludedPath excludedPath = new ExcludedPath();
+            excludedPath.path("/\"_etag\"/?");
+            indexingPolicy.excludedPaths().add(excludedPath);
+            collectionInfo.setIndexingPolicy(indexingPolicy);
             collectionInfo.setPartitionKey(partitionKey);
             client.createCollection("/dbs/" + databaseName, collectionInfo, null).
                     blockFirst();
